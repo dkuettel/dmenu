@@ -3,40 +3,45 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.11";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, flake-utils }:
     let
-      pkgs = import nixpkgs { system = "x86_64-linux"; };
-      pkg = pkgs.stdenv.mkDerivation rec {
-        pname = "dmenu";
-        version = "dk";
+      make = system:
+        let
+          pkgs = import nixpkgs { system = system; };
+          pkg = pkgs.stdenv.mkDerivation rec {
+            pname = "dmenu";
+            version = "dk";
 
-        src = ./.;
+            src = ./.;
 
-        nativeBuildInputs = [ pkgs.pkg-config ];
-        buildInputs = with pkgs; [
-          fontconfig
-          xorg.libX11
-          xorg.libXinerama
-          zlib
-          xorg.libXft
-        ];
+            nativeBuildInputs = [ pkgs.pkg-config ];
+            buildInputs = with pkgs; [
+              fontconfig
+              xorg.libX11
+              xorg.libXinerama
+              zlib
+              xorg.libXft
+            ];
 
-        postPatch = ''
-          sed -ri -e 's!\<(dmenu|dmenu_path|stest)\>!'"$out/bin"'/&!g' dmenu_run
-          sed -ri -e 's!\<stest\>!'"$out/bin"'/&!g' dmenu_path
-        '';
+            postPatch = ''
+              sed -ri -e 's!\<(dmenu|dmenu_path|stest)\>!'"$out/bin"'/&!g' dmenu_run
+              sed -ri -e 's!\<stest\>!'"$out/bin"'/&!g' dmenu_path
+            '';
 
-        preConfigure = ''
-          makeFlagsArray+=(
-            PREFIX="$out"
-            CC="$CC"
-          )
-        '';
-      };
+            preConfigure = ''
+              makeFlagsArray+=(
+                PREFIX="$out"
+                CC="$CC"
+              )
+            '';
+          };
+        in
+        {
+          packages.default = pkg;
+        };
     in
-    {
-      packages.x86_64-linux.default = pkg;
-    };
+    flake-utils.lib.eachDefaultSystem make;
 }
