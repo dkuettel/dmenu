@@ -6,9 +6,15 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
     let
-      make = system:
+      make =
+        system:
         let
           pkgs = import nixpkgs { system = system; };
           pkg = pkgs.stdenv.mkDerivation rec {
