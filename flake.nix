@@ -2,22 +2,24 @@
   description = "dmenu";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.11";
+    config.url = "github:dkuettel/config/main";
+    nixpkgs.follows = "config/nixpkgs";
+    # nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.05";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs =
     {
-      self,
       nixpkgs,
       flake-utils,
+      ...
     }:
     let
       make =
         system:
         let
           pkgs = import nixpkgs { system = system; };
-          pkg = pkgs.stdenv.mkDerivation rec {
+          pkg = pkgs.stdenv.mkDerivation {
             pname = "dmenu";
             version = "dk";
 
