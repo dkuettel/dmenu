@@ -4,7 +4,7 @@
   inputs = {
     config.url = "github:dkuettel/config/main";
     nixpkgs.follows = "config/nixpkgs";
-    # nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.05";
+    # nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.ww";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -12,7 +12,6 @@
     {
       nixpkgs,
       flake-utils,
-      ...
     }:
     let
       make =
