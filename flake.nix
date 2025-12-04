@@ -2,16 +2,13 @@
   description = "dmenu";
 
   inputs = {
-    config.url = "github:dkuettel/config/main";
-    nixpkgs.follows = "config/nixpkgs";
-    # nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.ww";
+    nixpkgs.url = "github:dkuettel/nixpkgs/stable";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs =
     {
       self,
-      config,
       nixpkgs,
       flake-utils,
     }:
