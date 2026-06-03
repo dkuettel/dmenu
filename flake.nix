@@ -2,7 +2,7 @@
   description = "dmenu";
 
   inputs = {
-    nixpkgs.url = "github:dkuettel/nixpkgs/stable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -26,10 +26,10 @@
             nativeBuildInputs = [ pkgs.pkg-config ];
             buildInputs = with pkgs; [
               fontconfig
-              xorg.libX11
-              xorg.libXinerama
+              libX11
+              libXinerama
               zlib
-              xorg.libXft
+              libXft
             ];
 
             postPatch = ''
